@@ -18,7 +18,7 @@ fn main() {
 fn first_part(lines: &Vec<i32>) -> i32 {
     for i in lines {
         for j in lines {
-            if j != i && i + j == 2020 {
+            if i + j == 2020 {
                 return j * i;
             }
         }
@@ -31,7 +31,7 @@ fn second_part(lines: &Vec<i32>) -> i32 {
     for i in lines {
         for j in lines {
             for k in lines {
-                if j != i && k != i && i + j + k == 2020 {
+                if i + j + k == 2020 {
                     return j * i * k;
                 }
             }
