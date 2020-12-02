@@ -1,9 +1,7 @@
-use std::fs::File;
-use std::io::{self, BufRead};
-use std::path::Path;
+use aoc::read_lines;
 
 fn main() {
-    if let Ok(lines) = read_lines("./data/input.txt") {
+    if let Ok(lines) = read_lines("./data/day1.txt") {
         let input: Vec<i32> = lines
             .filter_map(Result::ok)
             .map(|l| l.parse::<i32>())
@@ -39,12 +37,4 @@ fn second_part(lines: &Vec<i32>) -> i32 {
     }
 
     0
-}
-
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where
-    P: AsRef<Path>,
-{
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
 }
