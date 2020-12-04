@@ -7,7 +7,7 @@ fn main() {
 }
 
 fn first_part(data: &Vec<String>) -> usize {
-    traverse(data, 1, None)
+    traverse(data, 3, None)
 }
 
 fn second_part(data: &Vec<String>) -> usize {
@@ -24,10 +24,8 @@ fn second_part(data: &Vec<String>) -> usize {
 
 fn traverse(data: &Vec<String>, right: usize, down: Option<usize>) -> usize {
     let lines = data.iter().step_by(down.unwrap_or(1));
-    let lines_count = data.len();
     let mut result = 0;
     let mut x = 0;
-    let max_index = lines_count * right;
 
     for (index, line) in lines.enumerate() {
         if index == 0 {
@@ -36,28 +34,24 @@ fn traverse(data: &Vec<String>, right: usize, down: Option<usize>) -> usize {
 
         x += right;
         let trimmed_line = line.trim();
-        let mut new_line = trimmed_line.to_string();
-        let range = divide_ceil(max_index, trimmed_line.len());
 
-        for _ in 0..range {
-            new_line.push_str(trimmed_line);
-        }
-
-        match new_line.chars().nth(x) {
-            Some(c) => {
-                if c == '#' {
-                    result += 1
-                }
-            }
-            _ => (),
+        if has_char_at(trimmed_line.to_string(), x) {
+            result += 1;
         }
     }
 
     result
 }
 
-fn divide_ceil(a: usize, b: usize) -> usize {
-    ((a / b) as f64).ceil() as usize
+fn has_char_at(value: String, mut index: usize) -> bool {
+    while index >= value.len() {
+        index -= value.len();
+    }
+
+    match value.chars().nth(index) {
+        Some(c) => c == '#',
+        _ => false,
+    }
 }
 
 #[cfg(test)]
