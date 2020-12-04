@@ -9,3 +9,13 @@ where
     let file = File::open(filename)?;
     Ok(io::BufReader::new(file).lines())
 }
+
+pub fn get_lines<P>(filename: P) -> Vec<String>
+where
+    P: AsRef<Path>,
+{
+    match read_lines(filename) {
+        Ok(lines) => lines.filter_map(Result::ok).collect(),
+        Err(_) => Vec::new(),
+    }
+}
