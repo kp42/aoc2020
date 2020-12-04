@@ -153,6 +153,65 @@ class TestSecondPart(unittest.TestCase):
         self.assertEqual(second_part(data), 0)
 
 
+class TestValidators(unittest.TestCase):
+    def test_is_valid_hex_color(self):
+        cases = [
+            ["#123abc", True],
+            ["#123abz", False],
+            ["123abc", False],
+        ]
+
+        for (value, expected) in cases:
+            self.assertEqual(is_valid_hex_color(value), expected)
+
+    def test_is_valid_color(self):
+        cases = [
+            ["brn", True],
+            ["wat", False],
+        ]
+
+        for (value, expected) in cases:
+            self.assertEqual(is_valid_color(value), expected)
+
+    def test_is_valid_height(self):
+        cases = [
+            ["60in", True],
+            ["190cm", True],
+            ["190in", False],
+            ["190", False],
+        ]
+
+        for (value, expected) in cases:
+            self.assertEqual(is_valid_height(value), expected)
+
+    def test_is_valid_birthyear(self):
+        cases = [
+            ["2002", True],
+            ["2003", False],
+        ]
+
+        for (value, expected) in cases:
+            self.assertEqual(is_valid_birthyear(value), expected)
+
+    def test_is_valid_issue_year(self):
+        cases = [
+            ["2012", True],
+            ["2003", False],
+        ]
+
+        for (value, expected) in cases:
+            self.assertEqual(is_valid_issue_year(value), expected)
+
+    def test_is_valid_expire_year(self):
+        cases = [
+            ["2024", True],
+            ["2012", False],
+        ]
+
+        for (value, expected) in cases:
+            self.assertEqual(is_valid_expire_year(value), expected)
+
+
 def read_file(file_path):
     with open(file_path) as file:
         data = file.readlines()
