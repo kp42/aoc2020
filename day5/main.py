@@ -53,6 +53,34 @@ def first_part(lines):
     return seat_id
 
 
+def get_all_available_seats():
+    result = []
+
+    for row in range(0, MAX_ROWS):
+        for column in range(0, MAX_COLUMNS):
+            result.append(calculate_seat_id(row, column))
+
+    return result
+
+
+def second_part(lines):
+    seats = []
+    for line in lines:
+        row, column = get_row_column_pair(line)
+        seats.append(calculate_seat_id(row, column))
+
+    seats.sort()
+    available_seats = get_all_available_seats()
+    unused_seats = [i for i in available_seats if i not in seats]
+    my_seat = 0
+
+    for seat in unused_seats:
+        if min(seats) <= seat <= max(seats):
+            my_seat = seat
+
+    return my_seat
+
+
 class TestFirstPart(unittest.TestCase):
     def test_row_column_pairs(self):
         cases = {
@@ -81,3 +109,4 @@ class TestFirstPart(unittest.TestCase):
 if __name__ == "__main__":
     lines = read_lines("./input.txt")
     print(first_part(lines))
+    print(second_part(lines))
