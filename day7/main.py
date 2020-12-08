@@ -30,6 +30,14 @@ def extract_bag_color_rules(line):
     return [bag_type, []]
 
 
+def extract_count_color_pairs(line):
+    [bag_type, rules] = line.split(" bags contain ")
+    rule_matches = re.findall(r"(?<=(\d) )([\w\s]+)(?= bag)", rules)
+    if rule_matches:
+        return [bag_type, rule_matches]
+    return [bag_type, []]
+
+
 def first_part(lines):
     bag_rules = {}
     for line in lines:
@@ -45,10 +53,50 @@ def first_part(lines):
     return result
 
 
+def second_part_recursion(bag_type, all_bags):
+    result = 0
+    bags = all_bags[bag_type]
+
+    for (count, bag) in bags:
+        if len(all_bags[bag]) == 0:
+            return 1
+
+        count = int(count)
+        child = second_part_recursion(bag, all_bags)
+
+        if child == 1:
+            result += count * child
+        else:
+            result += count + count * child
+
+    return result
+
+
+def second_part_count_bags(bag_rules):
+    def count_inner_bags(currentbag):
+        return sum(
+            int(count) + int(count) * count_inner_bags(bag)
+            for count, bag in bag_rules[currentbag]
+        )
+
+    return count_inner_bags(SHINY_GOLD_BAG)
+
+
+def second_part(lines):
+    lines = read_lines("./input.txt")
+    bag_rules = {}
+    for line in lines:
+        [color, rules] = extract_count_color_pairs(line)
+        bag_rules[color] = rules
+
+    return second_part_count_bags(bag_rules)
+
+
 def main():
     lines = read_lines("./input.txt")
 
     print(first_part(lines))
+    print(second_part(lines))
 
 
 if __name__ == "__main__":
