@@ -19,10 +19,26 @@ def first_part(lines):
     return buckets[1] * buckets[3]
 
 
+def second_part(numbers):
+    """
+    CHEATING!!
+    Got solution from: https://gist.github.com/Battleman/b5a6e171cc4660e69fd51507f73c9190
+    """
+    linkers = {n: 1 for n in numbers}
+    for i, n1 in enumerate(numbers):
+        for j in (i + 2, i + 3):
+            if j < len(numbers) and numbers[j] - n1 <= 3:
+                for n2 in numbers[j:]:
+                    linkers[n2] += linkers[n1]
+
+    return linkers[max(numbers)]
+
+
 def main():
     lines = read_lines("./input.txt")
 
     print(first_part(lines))
+    print(second_part(lines))
 
 
 if __name__ == "__main__":
